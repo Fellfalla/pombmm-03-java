@@ -1,4 +1,4 @@
-package de.tum.in.www1;
+﻿package de.tum.in.www1;
 
 import de.tum.in.www1.model.Reservation;
 import javafx.application.Application;
@@ -47,15 +47,35 @@ public class PedelecApp extends Application {
         primaryStage.show();
 		
 		reserveButton.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent e) {
-		        System.out.println("Reserve Button clicked");
-		        
-		        Reservation reservation = new Reservation();
-		        reservation.setBike(pedelecNametext.getText());
-		        reservation.setStartDate(datePicker.getValue());
-		        reservation.setStartTime(timeTextField.getText());
-		        reservation.save();
-		    }
+			@Override public void handle(ActionEvent e) { 
+				System.out.println("Reserve Button clicked");
+				LocalDate localDate = datePicker.getValue();
+
+				if(startDate != null){
+					final String time = timeTextField.getText(); 
+					final String pedelecName = pedelecNametext.getText(); 
+					final String confirmationMessage = "Please confirm your reservation of " + pedelecName + " at " +
+						localDate.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + time; 
+			
+					ButtonType alert = new Alert(AlertType.CONFIRMATION, confirmationMessage).showAndWait().get();
+					if (alert == ButtonType.OK) { 
+						Reservation newReservation = new Reservation(); 
+						newReservation.setBike(x_4);
+						PedelecActivity.java
+						newReservation.setStartDate(localDate);
+						newReservation.setStartTime(time); 
+						newReservation.setBike(pedelecName);
+						newReservation.save();
+						System.out.println("Reservation confirmed");
+					}
+					else{
+						System.out.println("Reservation cancelled");
+					}
+				}
+				else{
+					System.out.println("Please choose a valid date time");
+				}
+			}
 		});
     }
 
